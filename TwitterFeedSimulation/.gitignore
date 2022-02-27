@@ -3,7 +3,5 @@ Logging.log
 UnitTestReport.log
 .vscode/
 __pycache__/
-user.txt
-tweet.txt
 UnitTests/__pycache__/
 
