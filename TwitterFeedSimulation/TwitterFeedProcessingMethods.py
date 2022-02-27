@@ -78,7 +78,9 @@ class clsTwitterFeedProcessingMethods():
         # Sort List of Users into alphabetical order
         lstAllUsers = sorted(lstAllUsers)
 
-        return(dctUserRelations, lstAllUsers)
+        tplUsers = (dctUserRelations, lstAllUsers)
+
+        return(tplUsers)
 
     @staticmethod
     def lstParseTweets(acTweetContent: str):

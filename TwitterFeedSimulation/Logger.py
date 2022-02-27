@@ -23,12 +23,11 @@ class clsLogger():
         self.acLoggingFormat = "%(asctime)s,%(msecs)03d,%(levelname)s,%(filename)s,%(lineno)d,%(funcName)s,%(message)s"
         self.acLoggingDateFormat = "%Y,%m,%d,%H,%M,%S"
         
-    def vConfigureLogger(self):
+    def vConfigureLogger(self, acFileName: str):
         """ This function which configures the Logging
 
-        Parameters: (TODO)
+        Parameters:
             acFileName (str) : Name of Log file
-            acloggingDateFormat (str) : Date format
 
         Returns:
             None
@@ -51,7 +50,7 @@ class clsLogger():
         self.objLogger.addHandler(self.objLoggingConsoleHandler)
 
         # When we log to file
-        self.objLoggingRotatingFileHandler = logging.handlers.RotatingFileHandler(filename="logging.log")
+        self.objLoggingRotatingFileHandler = logging.handlers.RotatingFileHandler(filename=acFileName)
         self.objLoggingRotatingFileHandler.setLevel(logging.DEBUG)
         self.objLoggingRotatingFileHandler.setFormatter(self.objLogFormatter)
         self.objLogger.addHandler(self.objLoggingRotatingFileHandler)
