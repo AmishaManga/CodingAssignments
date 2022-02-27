@@ -7,6 +7,7 @@ especially if it is to be deployed on a production system.
 import logging
 from logging.handlers import RotatingFileHandler
 
+
 class clsLogger():
     """
     Logger Class
