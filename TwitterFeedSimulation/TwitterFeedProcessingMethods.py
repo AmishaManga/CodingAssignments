@@ -49,7 +49,7 @@ class clsTwitterFeedProcessingMethods():
 
         """
         dctUserRelations = {}
-        lstAllUsers = []    
+        lstAllUsers = []
         tplUsers = (dctUserRelations, lstAllUsers)
 
         # If User Content is empty
@@ -118,14 +118,32 @@ class clsTwitterFeedProcessingMethods():
         """
         acResultantSimulationFeed = ""
 
-        for acUser in lstUsers:
-            print(acUser)
-            # is user in dictionary key:
-            if acUser in dctUserRelations.keys():
+        # If dictionary of user relations is empty
+        if (not dctUserRelations):
+            return (acResultantSimulationFeed)
+
+        # If list of users and their tweets is empty
+        if (not lstTweets):
+            return (acResultantSimulationFeed)
+
+        # If list of all users is empty
+        if (not lstUsers):
+            return (acResultantSimulationFeed)
+
+        """
+        Go through alphabetically ordered list and then check if the user follows any other users
+        by checking if the user matches the dictionary key. Then go through the list of users and tweets
+        and if any of the users in the user relations dictionary has tweeted something, add to the resultant
+        twitter simulation feed. Note: Tweeter refers to the user that has posted a tweet.
+        """
+
+        for acCurrentUser in lstUsers:
+            acResultantSimulationFeed += f'{acCurrentUser}\n'
+
+            if acCurrentUser in dctUserRelations.keys():
                 for acTweet in lstTweets:
                     acTweeter = acTweet[0]
-                    # if user in list of users
-                    if acTweeter in dctUserRelations[acUser]:
-                        print(acTweet)
+                    if acTweeter in dctUserRelations[acCurrentUser]:
+                        acResultantSimulationFeed += f'\t@{acTweeter}: {acTweet[1]}\n'
 
         return (acResultantSimulationFeed)
