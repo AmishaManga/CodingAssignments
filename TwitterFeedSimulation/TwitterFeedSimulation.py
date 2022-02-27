@@ -69,7 +69,7 @@ def vMain():
     acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile(sys.argv[1])
 
     # Parse user content
-    lstUsers, dctUserRelations = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+    (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
 
     if (not lstUsers):
         logging.error("No users. Exit!")
@@ -86,6 +86,7 @@ def vMain():
         return
 
     # Create the desired twitter simulation feed
+    
     acDisplayFeed = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
 
     # Display the twitter simulation feed

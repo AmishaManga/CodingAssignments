@@ -44,14 +44,41 @@ class clsTwitterFeedProcessingMethods():
             Returns:
                 tplUsers(dctUserRelations, lstAllUsers)
                 dctUserRelations (dictionary): {user(str): user and all users current user follows (list of strings)}
+                    example: {'Ward': ['Ward', 'Martin', 'Alan']}
                 lstAllUsers (list): [all users alphabetically sorted (str)]
 
         """
         dctUserRelations = {}
-        lstAllUsers = []
+        lstAllUsers = []    
         tplUsers = (dctUserRelations, lstAllUsers)
 
-        return (tplUsers)
+        # If User Content is empty
+        if (not acUserContent):
+            return(tplUsers)
+
+        # Go through each line in text file
+        for acLine in acUserContent.splitlines():
+            acUserLine = acLine.replace(',', '').split()
+            acUserLine.remove('follows')
+
+            # Create dictionary of users and who they follow : i.e {user : all users current user follows including current user}
+            acUser = acUserLine[0]
+            acUserAndRelations = acUserLine[:]
+            dctUserRelations[(acUser)] = acUserAndRelations
+
+            # Create list of all users
+            lstAllUsers.append(acUserLine)
+
+        # Flatten the List Structure into one List of All Users
+        lstAllUsers = [item for sublist in lstAllUsers for item in sublist]
+
+        # Remove Duplicate Users
+        lstAllUsers = list(dict.fromkeys(lstAllUsers))
+
+        # Sort List of Users into alphabetical order
+        lstAllUsers = sorted(lstAllUsers)
+
+        return(dctUserRelations, lstAllUsers)
 
     @staticmethod
     def lstParseTweets(acTweetContent: str):
@@ -65,6 +92,14 @@ class clsTwitterFeedProcessingMethods():
 
         """
         lstTweets = []
+
+        # If Tweet Content is empty
+        if (not acTweetContent):
+            return(lstTweets)
+
+        for acLine in acTweetContent.splitlines():
+            acLineUserAndTweet = acLine.replace('\n', '').split('> ')
+            lstTweets.append(acLineUserAndTweet)
 
         return (lstTweets)
 
@@ -82,5 +117,15 @@ class clsTwitterFeedProcessingMethods():
 
         """
         acResultantSimulationFeed = ""
+
+        for acUser in lstUsers:
+            print(acUser)
+            # is user in dictionary key:
+            if acUser in dctUserRelations.keys():
+                for acTweet in lstTweets:
+                    acTweeter = acTweet[0]
+                    # if user in list of users
+                    if acTweeter in dctUserRelations[acUser]:
+                        print(acTweet)
 
         return (acResultantSimulationFeed)
