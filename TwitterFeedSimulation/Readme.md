@@ -39,4 +39,4 @@ $ python TwitterFeedSimulation.py
 
 ### Future work: 
 
-* Dockerize application to run on any operating system
+* Dockerize application to run on any operating system.

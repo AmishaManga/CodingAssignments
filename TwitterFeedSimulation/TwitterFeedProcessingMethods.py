@@ -14,10 +14,10 @@ class clsTwitterFeedProcessingMethods():
 
     @staticmethod
     def acReadFile(acFilePathPar: str):
-        """ Method to read an ascii file
+        """ Method to read an ascii file.
 
             Parameters:
-                acFilePathPar (str): The file path
+                acFilePathPar (str): The file path.
 
             Returns:
                 acFileContent (str): The contents inside the file.
@@ -36,16 +36,16 @@ class clsTwitterFeedProcessingMethods():
 
     @staticmethod
     def tplParseUsers(acUserContent: str):
-        """ Method to parse user text
+        """ Method to parse user text.
 
             Parameters:
-                acUserContent (str): User content as in user.txt
+                acUserContent (str): User content as in user.txt.
 
             Returns:
                 tplUsers(dctUserRelations, lstAllUsers)
-                dctUserRelations (dictionary): {user(str): user and all users current user follows (list of strings)}
-                    example: {'Ward': ['Ward', 'Martin', 'Alan']}
-                lstAllUsers (list): [all users alphabetically sorted (str)]
+                    dctUserRelations (dictionary): {user(str): user and all users current user follows (list of strings)}.
+                    example: {'Ward': ['Ward', 'Martin', 'Alan']}.
+                    lstAllUsers (list): [all users alphabetically sorted (str)].
 
         """
         dctUserRelations = {}
@@ -84,13 +84,13 @@ class clsTwitterFeedProcessingMethods():
 
     @staticmethod
     def lstParseTweets(acTweetContent: str):
-        """ Method to parse tweet text
+        """ Method to parse tweet text.
 
             Parameters:
-                acTweetContent (str): Tweet content as in tweet.txt
+                acTweetContent (str): Tweet content as in tweet.txt.
 
             Returns:
-                lstTweets (list): List containing [user (str): tweet (str)]
+                lstTweets (list): List containing [user (str): tweet (str)].
 
         """
         lstTweets = []
@@ -107,15 +107,15 @@ class clsTwitterFeedProcessingMethods():
 
     @staticmethod
     def acCreateFeedFromUserRelationsAndTweets(lstUsers: list, dctUserRelations: dict, lstTweets: list):
-        """ Method to produce twitter feed given the users and their tweets
+        """ Method to produce twitter feed given the users and their tweets.
 
             Parameters:
-                lstUsers (list): List of all users in string format, alphabetically sorted
-                dctUserRelations (dict): Dictionary of all users and the users they follow in string format
-                lstTweets (list): List of all users and what they tweeted in string format
+                lstUsers (list): List of all users in string format, alphabetically sorted.
+                dctUserRelations (dict): Dictionary of all users and the users they follow in string format.
+                lstTweets (list): List of all users and what they tweeted in string format.
 
             Returns:
-                acResultantSimulationFeed (str) : Desired Simulation Feed
+                acResultantSimulationFeed (str) : Desired Simulation Feed.
 
         """
         acResultantSimulationFeed = ""
@@ -132,12 +132,12 @@ class clsTwitterFeedProcessingMethods():
         if (not lstUsers):
             return (acResultantSimulationFeed)
 
-        """
+        '''
         Go through alphabetically ordered list and then check if the user follows any other users
         by checking if the user matches the dictionary key. Then go through the list of users and tweets
         and if any of the users in the user relations dictionary has tweeted something, add to the resultant
         twitter simulation feed. Note: Tweeter refers to the user that has posted a tweet.
-        """
+        '''
 
         for acCurrentUser in lstUsers:
             acResultantSimulationFeed += f'{acCurrentUser}\n'
