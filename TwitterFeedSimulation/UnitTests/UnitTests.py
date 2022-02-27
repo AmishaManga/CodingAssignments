@@ -36,7 +36,7 @@ class clsUnitTesting(unittest.TestCase):
 
         objDatetime = datetime.datetime.now()
         acTestReport = str("\n\n")
-        acTestReport += str("Module: Twitter Feed\n")
+        acTestReport += str("Module: Twitter Simulation Feed\n")
         acTestReport += str("Date: %s\n" % (objDatetime.strftime("%Y-%m-%d %H:%M:%S")))
         acTestReport += str("\n")
         acTestReport += str("****** Running Unit Tests ******\n")
@@ -66,7 +66,7 @@ class clsUnitTesting(unittest.TestCase):
             tplReturn (tpl): (bAllTestsPassed, acTestReportOutput)
                 bAllTestsPassed (bool): Boolean value which indicates if the method was successful or not.
                 acTestReportOutput (str): String which contains test report output as text
-                
+
         """
         acTestReportOutput = str("")
         bAllTestsPassed = bool(True)
@@ -105,6 +105,42 @@ Ward
             acTestReportOutput += "\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
 
         bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        Unit Test 002 : Expected Behavior with empty input files
+        '''
+        acTestReportOutput += "Unit Test 002 : [Expected Behaviour] (Empty input files)"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/002/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/002/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+
+
+
+
+
+
+
+
+
+
 
         tplReturn = (bAllTestsPassed, acTestReportOutput)
 
