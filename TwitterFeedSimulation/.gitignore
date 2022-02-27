@@ -1,2 +1,7 @@
 */vs
 logging.log
+.vscode/
+__pycache__/
+user.txt
+tweet.txt
+

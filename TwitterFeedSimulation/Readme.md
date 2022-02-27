@@ -1,11 +1,17 @@
+## Twitter Feed Simulation Program
+
 This directory contains a program written in python to simulate a twitter feed. 
 
-How to run: 
+### How to Run Program: 
 
-TODO 
+Please ensure the correct path to the input text files are provided.
 
-Assumptions made: 
+$ python TwitterFeedSimulation.py user.txt tweet.txt
 
+### Assumptions Made: 
+
+* List of users and their followers will be provided in a file named 'user.txt'.
+* List of users and their tweets will be provided in a file named 'tweets.txt'.
 * A username cannot contain the name 'follows'.
 * Every line in the user.txt file must contain the word 'follows'.
 * Every line in the user.txt file must contain a user or users after the token 'follows'. If there are multiple users, they will be comma seperated. 
@@ -17,5 +23,5 @@ Assumptions made:
 * In the statement: "Then for each tweet, emit a line with the following format: <tab>@user: <space>message." Tab is assumed to be 4 spaces.
 
 
-References:
+### References:
 [1] https://help.twitter.com/en/managing-your-account/twitter-username-rules
