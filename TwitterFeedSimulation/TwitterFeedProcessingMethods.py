@@ -59,6 +59,30 @@ class clsTwitterFeedProcessingMethods():
         # Go through each line in text file
         for acLine in acUserContent.splitlines():
             acUserLine = acLine.replace(',', '').split()
+
+            # Do some checks to confirm that the input user file is in a format we expect
+            # i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.'
+
+            if (len(acUserLine) < 3):
+                logging.error("There are not enough arguments (minimum 3 arguments required) in one of the lines of user.txt. User.txt is invalid.")
+                tplUsers = ({}, [])
+                return (tplUsers)
+
+            if (acUserLine.count('follows') > 1):
+                logging.error("The word 'follows' appears more than once in one of the lines of user.txt. User.txt is invalid.")
+                tplUsers = ({}, [])
+                return (tplUsers)
+
+            if (acUserLine.count('follows') < 1):
+                logging.error("The word 'follows' is missing in one of the lines of user.txt. User.txt is invalid.")
+                tplUsers = ({}, [])
+                return (tplUsers)
+
+            if (acUserLine[1] != str("follows")):
+                logging.error("The word 'follows' is not in the expected position in one of the lines of user.txt. User.txt is invalid.")
+                tplUsers = ({}, [])
+                return (tplUsers)
+
             acUserLine.remove('follows')
 
             # Create dictionary of users and who they follow : i.e {user : all users current user follows including current user}

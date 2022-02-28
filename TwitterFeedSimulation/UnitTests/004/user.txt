@@ -1,0 +1,3 @@
+Ward follows Alan
+Alan copies Martin
+Ward follows Martin, Alan

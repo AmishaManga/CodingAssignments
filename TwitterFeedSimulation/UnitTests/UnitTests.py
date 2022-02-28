@@ -47,9 +47,9 @@ class clsUnitTesting(unittest.TestCase):
         acTestReport += tplTestResult[1]
 
         if (bAllTestsPassed is True):
-            logging.info("All unit test passed")
+            logging.info("All unit tests passed")
         else:
-            logging.info("One or more unit test failed")
+            logging.info("One or more unit tests failed")
 
         acTestReport += "\n"
 
@@ -74,9 +74,11 @@ class clsUnitTesting(unittest.TestCase):
         tplReturn = (bAllTestsPassed, acTestReportOutput)
 
         '''
+        ====================================================================================================
         Unit Test 001 : Expected Behavior with provided input
+        ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 001 : [Expected Behaviour] (Provided inputs)"
+        acTestReportOutput += "Unit Test 001 : [Valid Input]   [Provided inputs]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/001/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/001/tweet.txt')
@@ -99,6 +101,114 @@ Ward
         try:
             self.assertEqual(acProducedResult, acCorrectResult)
             bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 002 : Empty input files
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 002 : [Invalid Input] [Empty input files]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/002/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/002/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 003 : No newline character between lines, and 'follows' appears multiple times in user.txt
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 003 : [Invalid Input] [User.txt: No newline, 'follows' appears multiple times]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/003/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/003/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 004 : The word 'follows' is absent in one of the lines in user.txt
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 004 : [Invalid Input] [User.txt: Missing 'follows']"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/004/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/004/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 005 : Extra user before the word 'follows' in one of the lines in user.txt
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 005 : [Invalid Input] [User.txt: Extra user before 'follows']"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/005/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/005/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
             acTestReportOutput += "\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
         except Exception as E:
             bUnitTestReturn = False
@@ -107,12 +217,41 @@ Ward
         bAllTestsPassed &= bUnitTestReturn
 
         '''
-        Unit Test 002 : Expected Behavior with empty input files
+        ====================================================================================================
+        Unit Test 006 : No user,users after the word 'follows' in one of the lines in user.txt
+        ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 002 : [Expected Behaviour] (Empty input files)"
+        acTestReportOutput += "Unit Test 006 : [Invalid Input] [User.txt: No user after 'follows']"
 
-        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/002/user.txt')
-        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/002/tweet.txt')
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/006/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/006/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 007 : Users after the word 'follows' are not comma seperated in one of the lines in user.txt TODO
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 007 : [Invalid Input] [User.txt: User list not comma seperated]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/007/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/007/tweet.txt')
 
         acCorrectResult = ""
 
@@ -131,16 +270,10 @@ Ward
 
         bAllTestsPassed &= bUnitTestReturn
 
-
-
-
-
-
-
-
-
-
-
+        if (bAllTestsPassed is True):
+            logging.info("All unit test passed")
+        else:
+            logging.info("One or more unit tests failed")
 
         tplReturn = (bAllTestsPassed, acTestReportOutput)
 
