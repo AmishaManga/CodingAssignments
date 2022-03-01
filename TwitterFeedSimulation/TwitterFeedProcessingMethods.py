@@ -58,12 +58,12 @@ class clsTwitterFeedProcessingMethods():
         if (not acUserContent):
             return(tplUsers)
 
-        # Go through each line in text file
+        # Go through each line in user file
         for acLine in acUserContent.splitlines():
             acUserLine = acLine.replace(',', '').split()
 
             # Do some checks to confirm that the input user file is in a format we expect
-            # i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.
+            # i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.'
 
             # Check that there are more than 3 arguments(i.e one user before 'follows' and atleast one user after) in each line of user.txt
             if (len(acUserLine) < 3):
@@ -71,16 +71,19 @@ class clsTwitterFeedProcessingMethods():
                 tplUsers = ({}, [])
                 return (tplUsers)
 
+            # Check that the word 'follows' does not appear more than once in each line of user.txt
             if (acUserLine.count('follows') > 1):
                 logging.error("The word 'follows' appears more than once in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
+            # Check that the word follows appears once in each line of user.txt
             if (acUserLine.count('follows') < 1):
                 logging.error("The word 'follows' is missing in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
+            # Check that the word follows appears where we expect, i.e one whitespace after first listed user in each line of user.txt
             if (acUserLine[1] != str("follows")):
                 logging.error("The word 'follows' is not in the expected position in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
@@ -105,7 +108,7 @@ class clsTwitterFeedProcessingMethods():
         # Check that user names are alpha-numeric with the exception of an underscore character
         for acUserName in lstAllUsers:
             if (re.match(acRegexUserNameFormat, acUserName) is None):
-                logging.error("Invalid user name %s in one of the lines of user.txt. User.txt is invalid.", acUserName)
+                logging.error("Invalid user name '%s' in one of the lines of user.txt. User.txt is invalid.", acUserName)
                 tplUsers = ({}, [])
                 return (tplUsers)
 
@@ -128,13 +131,33 @@ class clsTwitterFeedProcessingMethods():
 
         """
         lstTweets = []
+        acRegexUserNameFormat = '^[a-zA-Z0-9_]+$'  # Use this regex format to test for a valid username
 
         # If Tweet Content is empty
         if (not acTweetContent):
             return(lstTweets)
 
+        # Go through each line in tweet file
         for acLine in acTweetContent.splitlines():
             acLineUserAndTweet = acLine.replace('\n', '').split('> ')
+            acTweeter = acLineUserAndTweet[0]
+            acTweet = acLineUserAndTweet[1]
+
+            # Do some checks to confirm that the input tweet file is in a format we expect
+            # i.e 'Lines of the tweet file contain a user, followed by greater than, space and then a tweet that may be at most 140 characters in length.'
+
+            # Check that user name is alpha-numeric with the exception of an underscore character
+            if (re.match(acRegexUserNameFormat, acTweeter) is None):
+                logging.error("Invalid user name '%s' in one of the lines of tweet.txt. Tweet.txt is invalid.", acTweeter)
+                lstTweets = []
+                return(lstTweets)
+
+            # Check that the length of the characters in the tweet is not more than 140 characters
+            if (len(acTweet) > 140):
+                logging.error("The length of the tweet is greater than 140 characters in one of the lines of tweet.txt. Tweet.txt is invalid.")
+                lstTweets = []
+                return(lstTweets)
+
             lstTweets.append(acLineUserAndTweet)
 
         return (lstTweets)

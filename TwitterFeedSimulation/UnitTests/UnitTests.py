@@ -304,6 +304,60 @@ Ward
 
         bAllTestsPassed &= bUnitTestReturn
 
+        '''
+        ====================================================================================================
+        Unit Test 009 : Tweet post longer than 140 characters
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 009 : [Invalid Input] [Tweet.txt:  Tweet Post > 140 chars]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/009/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/009/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 010 : More than one user before '>'
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 010 : [Invalid Input] [Tweet.txt: More than 1 user, invalid username]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/010/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/010/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
         if (bAllTestsPassed is True):
             logging.info("All unit test passed")
         else:
