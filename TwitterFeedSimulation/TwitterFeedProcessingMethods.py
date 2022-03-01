@@ -5,6 +5,7 @@ tweets and the resultant output feed.
 """
 import logging
 from pathlib import Path
+import re
 
 
 class clsTwitterFeedProcessingMethods():
@@ -48,6 +49,7 @@ class clsTwitterFeedProcessingMethods():
                     lstAllUsers (list): [all users alphabetically sorted (str)].
 
         """
+        acRegexUserNameFormat = '^[a-zA-Z0-9_]+$'  # Use this regex format to test for a valid username
         dctUserRelations = {}
         lstAllUsers = []
         tplUsers = (dctUserRelations, lstAllUsers)
@@ -61,8 +63,9 @@ class clsTwitterFeedProcessingMethods():
             acUserLine = acLine.replace(',', '').split()
 
             # Do some checks to confirm that the input user file is in a format we expect
-            # i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.'
+            # i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.
 
+            # Check that there are more than 3 arguments(i.e one user before 'follows' and atleast one user after) in each line of user.txt
             if (len(acUserLine) < 3):
                 logging.error("There are not enough arguments (minimum 3 arguments required) in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
@@ -98,6 +101,13 @@ class clsTwitterFeedProcessingMethods():
 
         # Remove Duplicate Users
         lstAllUsers = list(dict.fromkeys(lstAllUsers))
+
+        # Check that user names are alpha-numeric with the exception of an underscore character
+        for acUserName in lstAllUsers:
+            if (re.match(acRegexUserNameFormat, acUserName) is None):
+                logging.error("Invalid user name %s in one of the lines of user.txt. User.txt is invalid.", acUserName)
+                tplUsers = ({}, [])
+                return (tplUsers)
 
         # Sort List of Users into alphabetical order
         lstAllUsers = sorted(lstAllUsers)

@@ -245,16 +245,50 @@ Ward
 
         '''
         ====================================================================================================
-        Unit Test 007 : Users after the word 'follows' are not comma seperated in one of the lines in user.txt TODO
+        Unit Test 007 : Non-alpha numeric characters in usernames in user.txt
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 007 : [Invalid Input] [User.txt: User list not comma seperated]"
+        acTestReportOutput += "Unit Test 007 : [Invalid Input] [User.txt: Non-alphanumeric chars in username]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/007/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/007/tweet.txt')
 
         acCorrectResult = ""
 
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 008 : Usernames with underscores and numbers
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 008 : [Valid Input] [User.txt: Underscores and numbers in username]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/008/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/008/tweet.txt')
+
+        acCorrectResult = '''Alan
+\t@Alan: If you have a procedure with 10 parameters, you probably missed some.
+\t@Alan: Random numbers should not be generated with a method chosen at random.
+Martin_01
+Ward
+\t@Alan: If you have a procedure with 10 parameters, you probably missed some.
+\t@Ward: There are only two hard things in Computer Science: cache invalidation, naming things and off-by-1 errors.
+\t@Alan: Random numbers should not be generated with a method chosen at random.
+'''
         (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
         lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
 
@@ -278,3 +312,30 @@ Ward
         tplReturn = (bAllTestsPassed, acTestReportOutput)
 
         return(tplReturn)
+ 
+        # '''
+        # ====================================================================================================
+        # Unit Test : Users after the word 'follows' are not comma seperated in one of the lines in user.txt TODO
+        # ====================================================================================================
+        # '''
+        # acTestReportOutput += "Unit Test : [Invalid Input] [User.txt: User list not comma seperated]"
+
+        # acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/TODO_001/user.txt')
+        # acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/TODO_001/tweet.txt')
+
+        # acCorrectResult = ""
+
+        # (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        # lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        # acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        # try:
+        #     self.assertEqual(acProducedResult, acCorrectResult)
+        #     bUnitTestReturn = True
+        #     acTestReportOutput += "\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        # except Exception as E:
+        #     bUnitTestReturn = False
+        #     acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        # bAllTestsPassed &= bUnitTestReturn
