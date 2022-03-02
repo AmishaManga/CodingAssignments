@@ -22,7 +22,7 @@ $ python TwitterFeedSimulation.py
 
 * List of users and their followers will be provided in a file named 'user.txt'.
 * List of users and their tweets will be provided in a file named 'tweets.txt'.
-* There will be at minimum, at least one tweet.
+* There will be at minimum, at least one valid tweet by a listed user. In other words, no 'empty' tweets.
 * A username cannot contain the name 'follows'.
 * Every line in the user.txt file must contain the word 'follows'.
 * Every line in the user.txt file must contain a user or users after the token 'follows'. If there are multiple users, they will be comma seperated. 

@@ -60,44 +60,44 @@ class clsTwitterFeedProcessingMethods():
 
         # Go through each line in user file
         for acLine in acUserContent.splitlines():
-            acUserLine = acLine.replace(',', '').split()
+            lstUserLine = acLine.replace(',', '').split()
 
             # Do some checks to confirm that the input user file is in a format we expect
             # i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.'
 
-            # Check that there are more than 3 arguments(i.e one user before 'follows' and atleast one user after) in each line of user.txt
-            if (len(acUserLine) < 3):
-                logging.error("There are not enough arguments (minimum 3 arguments required) in one of the lines of user.txt. User.txt is invalid.")
+            # Check that there are more than 3 parameters(i.e one user before 'follows' and atleast one user after) in each line of user.txt
+            if (len(lstUserLine) < 3):
+                logging.error("There are not enough parameters (minimum 3 parameters required) in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
             # Check that the word 'follows' does not appear more than once in each line of user.txt
-            if (acUserLine.count('follows') > 1):
+            if (lstUserLine.count('follows') > 1):
                 logging.error("The word 'follows' appears more than once in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
             # Check that the word follows appears once in each line of user.txt
-            if (acUserLine.count('follows') < 1):
+            if (lstUserLine.count('follows') < 1):
                 logging.error("The word 'follows' is missing in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
             # Check that the word follows appears where we expect, i.e one whitespace after first listed user in each line of user.txt
-            if (acUserLine[1] != str("follows")):
+            if (lstUserLine[1] != str("follows")):
                 logging.error("The word 'follows' is not in the expected position in one of the lines of user.txt. User.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
-            acUserLine.remove('follows')
+            lstUserLine.remove('follows')
 
             # Create dictionary of users and who they follow : i.e {user : all users current user follows including current user}
-            acUser = acUserLine[0]
-            acUserAndRelations = acUserLine[:]
+            acUser = lstUserLine[0]
+            acUserAndRelations = lstUserLine[:]
             dctUserRelations[(acUser)] = acUserAndRelations
 
             # Create list of all users
-            lstAllUsers.append(acUserLine)
+            lstAllUsers.append(lstUserLine)
 
         # Flatten the List Structure into one List of All Users
         lstAllUsers = [item for sublist in lstAllUsers for item in sublist]
@@ -139,9 +139,16 @@ class clsTwitterFeedProcessingMethods():
 
         # Go through each line in tweet file
         for acLine in acTweetContent.splitlines():
-            acLineUserAndTweet = acLine.replace('\n', '').split('> ')
-            acTweeter = acLineUserAndTweet[0]
-            acTweet = acLineUserAndTweet[1]
+            lstLineUserAndTweet = acLine.replace('\n', '').split('> ')
+
+            # Check that there is one user parameter and one tweet parameter
+            if (len(lstLineUserAndTweet) < 2):
+                logging.error("Incorrect number of parameters in one of the lines of tweet.txt. Tweet.txt is invalid.")
+                lstTweets = []
+                return(lstTweets)
+
+            acTweeter = lstLineUserAndTweet[0]
+            acTweet = lstLineUserAndTweet[1]
 
             # Do some checks to confirm that the input tweet file is in a format we expect
             # i.e 'Lines of the tweet file contain a user, followed by greater than, space and then a tweet that may be at most 140 characters in length.'
@@ -158,7 +165,7 @@ class clsTwitterFeedProcessingMethods():
                 lstTweets = []
                 return(lstTweets)
 
-            lstTweets.append(acLineUserAndTweet)
+            lstTweets.append(lstLineUserAndTweet)
 
         return (lstTweets)
 
