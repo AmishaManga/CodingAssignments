@@ -21,10 +21,11 @@ $ python TwitterFeedSimulation.py
 ### Assumptions Made: 
 
 * List of users and their followers will be provided in a file named 'user.txt'.
-* List of users and their tweets will be provided in a file named 'tweets.txt'.
-* There will be at minimum, at least one valid tweet by a listed user. In other words, no 'empty' tweets.
+* List of users and their tweets will be provided in a file named 'tweet.txt'.
+* If there is a listed user in tweet.txt, there will be a corresponding tweet. In other words, no 'empty' tweets. Whitespaces are allowed in tweet message.
+* If the tweet.txt file is completely empty but the user.txt file is completely valid, a plain list of users will be displayed in output feed.
 * A username cannot contain the name 'follows'.
-* Every line in the user.txt file must contain the word 'follows'.
+* Every line in the user.txt file must contain the word 'follows' and it must appear exactly once.
 * Every line in the user.txt file must contain a user or users after the token 'follows'. If there are multiple users, they will be comma seperated. 
 * Every line in user.txt and tweet.txt will be seperated with a 'newline'. A CR and LF as provided in the sample input files.
 * A username can only contain alphanumeric characters (letters A-Z, numbers 0-9) with the exception of underscores [1].
