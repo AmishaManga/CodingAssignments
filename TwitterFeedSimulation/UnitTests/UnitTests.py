@@ -275,7 +275,7 @@ Ward
         Unit Test 008 : Usernames with underscores and numbers
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 008 : [Valid Input] [user.txt: Underscores and numbers in username]"
+        acTestReportOutput += "Unit Test 008 : [Valid Input]   [user.txt: Underscores and numbers in username]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/008/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/008/tweet.txt')
@@ -463,6 +463,60 @@ Ward
         except Exception as E:
             bUnitTestReturn = False
             acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 015: Missing '>' in tweet.txt
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 015 : [Invalid Input] [tweet.txt: Missing '>']"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/015/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/015/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
+        '''
+        ====================================================================================================
+        Unit Test 016: More than 1 '>' in line in tweet.txt
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 016 : [Invalid Input] [tweet.txt: More than 1 '>' in line]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/016/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/016/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
 
         bAllTestsPassed &= bUnitTestReturn
 

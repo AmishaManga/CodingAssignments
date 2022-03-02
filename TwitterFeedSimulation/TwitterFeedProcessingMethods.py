@@ -66,6 +66,12 @@ class clsTwitterFeedProcessingMethods():
 
         # Go through each line in user file
         for acLine in acUserContent.splitlines():
+            # Check that there is a 'follows' in each line
+            if (acLine.find('follows') == -1):
+                logging.error("The word 'follows' is missing in one of the lines of user.txt. user.txt is invalid.")
+                tplUsers = ({}, [])
+                return (tplUsers)
+
             intCommaCount = int(acLine.count(','))
             lstUserLine = acLine.replace(',', '').split()
 
@@ -78,12 +84,6 @@ class clsTwitterFeedProcessingMethods():
             # Check that the word 'follows' does not appear more than once in each line of user.txt
             if (lstUserLine.count('follows') > 1):
                 logging.error("The word 'follows' appears more than once in one of the lines of user.txt. user.txt is invalid.")
-                tplUsers = ({}, [])
-                return (tplUsers)
-
-            # Check that the word follows appears once in each line of user.txt
-            if (lstUserLine.count('follows') < 1):
-                logging.error("The word 'follows' is missing in one of the lines of user.txt. user.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
@@ -154,8 +154,18 @@ class clsTwitterFeedProcessingMethods():
 
         # Go through each line in tweet file
         for acLine in acTweetContent.splitlines():
-            # TODO is there even a > in the string
-            intCountGreaterThanOccurance = acLine.count('>')
+            # Check that there is a '>' in each line
+            if (acLine.find('>') == -1):
+                logging.error("The '>' character is missing in one of the lines of tweet.txt. tweet.txt is invalid.")
+                lstTweets = []
+                return(lstTweets)
+
+            # Check that the '>' character does not appear more than one time in each line
+            if (acLine.count('>') > 1):
+                logging.error("The '>' character appears more than once in one of the lines of tweet.txt. tweet.txt is invalid.")
+                lstTweets = []
+                return(lstTweets)
+
             lstLineUserAndTweet = acLine.replace('\n', '').split('> ')
 
             # Check that there is one user parameter and one tweet parameter
