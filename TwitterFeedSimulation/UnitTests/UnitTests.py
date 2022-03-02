@@ -14,13 +14,17 @@ from TwitterFeedProcessingMethods import clsTwitterFeedProcessingMethods
 class clsUnitTesting(unittest.TestCase):
     """ This is the unit test class responsible for handling unit tests for the twitter simulation feed program.
     """
+    def __init__(self):
+        super(clsUnitTesting, self).__init__()
+        # Choose a name for log file
+        self.acUnitTestLogFileName = 'UnitTestReport.log'
 
-    # Choose a name for log file
-    acUnitTestLogFileName = 'UnitTestReport.log'
+        # Enabled logging to console
+        self.bLogToConsole = True
 
-    # Start and configure the Logger
-    objUnitTestLogger = clsLogger()
-    objUnitTestLogger.vConfigureLogger(acUnitTestLogFileName)
+        # Start and configure the Logger
+        self.objUnitTestLogger = clsLogger()
+        self.objUnitTestLogger.vConfigureLogger(self.acUnitTestLogFileName, self.bLogToConsole)
 
     def bMainTestMethod(self):
         """ This is the main testing method.
@@ -555,8 +559,38 @@ Ward
 
         bAllTestsPassed &= bUnitTestReturn
 
+        '''
+        ====================================================================================================
+        Unit Test 018: Empty tweet.txt file, valid user.txt file
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 018 : [Valid Input]   [Valid users.txt file, Empty tweet.txt file]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/018/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/018/tweet.txt')
+
+        acCorrectResult = '''Alan
+Martin
+Ward
+'''
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserList(lstUsers)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
         if (bAllTestsPassed is True):
-            logging.info("All unit test passed")
+            logging.info("All unit tests passed")
         else:
             logging.info("One or more unit tests failed")
 

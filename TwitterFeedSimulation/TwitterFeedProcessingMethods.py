@@ -197,6 +197,11 @@ class clsTwitterFeedProcessingMethods():
     def acCreateFeedFromUserRelationsAndTweets(lstUsers: list, dctUserRelations: dict, lstTweets: list):
         """ Method to produce twitter feed given the users and their tweets.
 
+        Go through alphabetically ordered list and then check if the user follows any other users
+        by checking if the user matches the dictionary key. Then go through the list of users and tweets
+        and if any of the users in the user relations dictionary has tweeted something, add to the resultant
+        twitter simulation feed. Note: Tweeter refers to the user that has posted a tweet.
+
             Parameters:
                 lstUsers (list): List of all users in string format, alphabetically sorted.
                 dctUserRelations (dict): Dictionary of all users and the users they follow in string format.
@@ -220,13 +225,6 @@ class clsTwitterFeedProcessingMethods():
         if (not lstUsers):
             return (acResultantSimulationFeed)
 
-        '''
-        Go through alphabetically ordered list and then check if the user follows any other users
-        by checking if the user matches the dictionary key. Then go through the list of users and tweets
-        and if any of the users in the user relations dictionary has tweeted something, add to the resultant
-        twitter simulation feed. Note: Tweeter refers to the user that has posted a tweet.
-        '''
-
         for acCurrentUser in lstUsers:
             acResultantSimulationFeed += f'{acCurrentUser}\n'
 
@@ -235,5 +233,29 @@ class clsTwitterFeedProcessingMethods():
                     acTweeter = acTweet[0]
                     if acTweeter in dctUserRelations[acCurrentUser]:
                         acResultantSimulationFeed += f'\t@{acTweeter}: {acTweet[1]}\n'
+
+        return (acResultantSimulationFeed)
+
+    @staticmethod
+    def acCreateFeedFromUserList(lstUsers: list):
+        """ Method to produce twitter feed given the list of users.
+
+        This method is called in the event that none of the users tweet any messages.
+
+            Parameters:
+                lstUsers (list): List of all users in string format, alphabetically sorted.
+
+            Returns:
+                acResultantSimulationFeed (str) : Desired Simulation Feed. Alphabetically ordered list.
+
+        """
+        acResultantSimulationFeed = ""
+
+        # If list of users is empty
+        if (not lstUsers):
+            return (acResultantSimulationFeed)
+
+        for acCurrentUser in lstUsers:
+            acResultantSimulationFeed += f'{acCurrentUser}\n'
 
         return (acResultantSimulationFeed)

@@ -23,7 +23,7 @@ import logging
 from pathlib import Path
 from Logger import clsLogger
 from TwitterFeedProcessingMethods import clsTwitterFeedProcessingMethods
-from UnitTests.UnitTests import clsUnitTesting 
+from UnitTests.UnitTests import clsUnitTesting
 
 
 def vMain():
@@ -34,8 +34,6 @@ def vMain():
     Returns:
     """
 
-    objClsUnitTesting = clsUnitTesting()
-
     if (len(sys.argv) != 3):
         print('Please pass two command line arguments')
         print('Example:')
@@ -44,6 +42,8 @@ def vMain():
         print('')
         print('Run unit tests and produce report:')
         print('')
+
+        objClsUnitTesting = clsUnitTesting()
 
         # If we passed in the unit-test option as an argument then run the unit tests and exit
         if (objClsUnitTesting.bMainTestMethod() is True):
@@ -56,9 +56,12 @@ def vMain():
     # Choose a name for log file
     acLogFileName = 'Logging.log'
 
+    # Enabled logging to console, set to  True for Debugging
+    bLogToConsole = True
+
     # Start and configure the Logger
     objClsLogger = clsLogger()
-    objClsLogger.vConfigureLogger(acLogFileName)
+    objClsLogger.vConfigureLogger(acLogFileName, bLogToConsole)
 
     objPathUserTxt = Path(sys.argv[1])
     objPathTweetTxt = Path(sys.argv[2])
@@ -86,25 +89,35 @@ def vMain():
     # Read the user.txt file
     acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile(sys.argv[1])
 
+    if (not acUserFileContent):
+        logging.error("user.txt file has no contents. Exit!")
+        return
+
     # Parse user content
     (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
 
     if (not lstUsers):
-        logging.error("No users. Exit!")
+        logging.error("user.txt is not valid. Exit!")
         return
 
     # Read the tweet.txt file
     acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile(sys.argv[2])
 
-    # Parse tweet content
-    lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+    # If tweet.txt has no contents, process user list if valid
+    if (not acTweetFileContent):
+        logging.info("tweet.txt file has no contents, processing list of users")
+        acDisplayFeed = clsTwitterFeedProcessingMethods.acCreateFeedFromUserList(lstUsers)
 
-    if (not lstTweets):
-        logging.error("No tweets. Exit!")
-        return
+    else:
+        # Parse tweet content
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
 
-    # Create the desired twitter simulation feed
-    acDisplayFeed = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+        if (not lstTweets):
+            logging.error("tweet.txt is not valid. Exit!")
+            return
+
+        # Create the desired twitter simulation feed
+        acDisplayFeed = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
 
     # Display the twitter simulation feed
     print(acDisplayFeed)

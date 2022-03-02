@@ -23,11 +23,12 @@ class clsLogger():
         self.acLoggingFormat = "%(asctime)s,%(msecs)03d,%(levelname)s,%(filename)s,%(lineno)d,%(funcName)s,%(message)s"
         self.acLoggingDateFormat = "%Y,%m,%d,%H,%M,%S"
         
-    def vConfigureLogger(self, acFileName: str):
+    def vConfigureLogger(self, acFileName: str, bLogToConsole: bool):
         """ This function which configures the Logging
 
         Parameters:
             acFileName (str) : Name of Log file
+            bLogToConsole (bool) : Boolean flag to enable logging to console
 
         Returns:
             None
@@ -39,15 +40,12 @@ class clsLogger():
 
         self.objLogFormatter = logging.Formatter(self.acLoggingFormat, self.acLoggingDateFormat)
 
-        # Set up the logger to use UTC time instead of local time - this is to follow the logging standard
-        # logging.Formatter.converter = time.gmtime
-
-        # Also make use of a StreamHandler so that we can log to the console as well to make development easier
-        # Disable later if necessary
-        self.objLoggingConsoleHandler = logging.StreamHandler()
-        self.objLoggingConsoleHandler.setLevel(logging.DEBUG)
-        self.objLoggingConsoleHandler.setFormatter(self.objLogFormatter)
-        self.objLogger.addHandler(self.objLoggingConsoleHandler)
+        if bLogToConsole:
+            # Also make use of a StreamHandler so that we can log to the console as well to make development easier
+            self.objLoggingConsoleHandler = logging.StreamHandler()
+            self.objLoggingConsoleHandler.setLevel(logging.DEBUG)
+            self.objLoggingConsoleHandler.setFormatter(self.objLogFormatter)
+            self.objLogger.addHandler(self.objLoggingConsoleHandler)
 
         # When we log to file
         self.objLoggingRotatingFileHandler = logging.handlers.RotatingFileHandler(filename=acFileName)
