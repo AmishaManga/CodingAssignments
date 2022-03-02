@@ -55,4 +55,5 @@ $ python TwitterFeedSimulation.py
 
 ### Future work: 
 
-* Dockerize application to run on any operating system such that the user does not need to download python to run the code. 
+* Dockerize application to run on any operating system such that the user does not need to download python to run the code. I struggled to install Docker for windows on my machine therefore did not get this far.
+* Add more Unit Tests. There are a few more unit tests I would have added, however due to time constraints this is where I am going to stop.
