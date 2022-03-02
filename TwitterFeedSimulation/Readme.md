@@ -9,9 +9,24 @@ Python version 3.7.4, or later and a windows 10 operating system is required to 
 Python can be downloaded from python.org: 
 [Download Python](https://www.python.org/downloads/)
 
-Please ensure the correct path to the input text files are provided.
+One can confirm that python is installed correctly if you open a terminal and type: python. It should return with the version that has been installed. 
+
+In my environment, the return looks something like:
+
+'''
+Python 3.7.4 (tags/v3.7.4:e09359112e, Jul  8 2019, 20:34:20) [MSC v.1916 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+'''
+
+Clone the repository as follows: 
+
+git clone https://github.com/AmishaManga/CodingAssignments.git
+
+Navigate to CodingAssignments -> TwitterFeedSimulation. Once in the TwitterFeedSimulation directory, open a terminal here and type:
 
 $ python TwitterFeedSimulation.py user.txt tweet.txt
+
+(Please ensure the correct path to the input text files are provided if not in current directory.)
 
 For Unit Tests:
 
@@ -40,4 +55,4 @@ $ python TwitterFeedSimulation.py
 
 ### Future work: 
 
-* Dockerize application to run on any operating system.
+* Dockerize application to run on any operating system such that the user does not need to download python to run the code. 
