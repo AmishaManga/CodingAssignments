@@ -140,7 +140,7 @@ Ward
         Unit Test 003 : No newline character between lines, and 'follows' appears multiple times in user.txt
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 003 : [Invalid Input] [User.txt: No newline, 'follows' appears multiple times]"
+        acTestReportOutput += "Unit Test 003 : [Invalid Input] [user.txt: No newline, 'follows' appears multiple times]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/003/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/003/tweet.txt')
@@ -167,7 +167,7 @@ Ward
         Unit Test 004 : The word 'follows' is absent in one of the lines in user.txt
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 004 : [Invalid Input] [User.txt: Missing 'follows']"
+        acTestReportOutput += "Unit Test 004 : [Invalid Input] [user.txt: Missing 'follows']"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/004/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/004/tweet.txt')
@@ -194,7 +194,7 @@ Ward
         Unit Test 005 : Extra user before the word 'follows' in one of the lines in user.txt
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 005 : [Invalid Input] [User.txt: Extra user before 'follows']"
+        acTestReportOutput += "Unit Test 005 : [Invalid Input] [user.txt: Extra user before 'follows']"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/005/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/005/tweet.txt')
@@ -221,7 +221,7 @@ Ward
         Unit Test 006 : No user,users after the word 'follows' in one of the lines in user.txt
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 006 : [Invalid Input] [User.txt: No user after 'follows']"
+        acTestReportOutput += "Unit Test 006 : [Invalid Input] [user.txt: No user after 'follows']"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/006/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/006/tweet.txt')
@@ -248,7 +248,7 @@ Ward
         Unit Test 007 : Non-alpha numeric characters in usernames in user.txt
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 007 : [Invalid Input] [User.txt: Non-alphanumeric chars in username]"
+        acTestReportOutput += "Unit Test 007 : [Invalid Input] [user.txt: Non-alphanumeric chars in username]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/007/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/007/tweet.txt')
@@ -275,7 +275,7 @@ Ward
         Unit Test 008 : Usernames with underscores and numbers
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 008 : [Valid Input] [User.txt: Underscores and numbers in username]"
+        acTestReportOutput += "Unit Test 008 : [Valid Input] [user.txt: Underscores and numbers in username]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/008/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/008/tweet.txt')
@@ -309,7 +309,7 @@ Ward
         Unit Test 009 : Tweet post longer than 140 characters
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 009 : [Invalid Input] [Tweet.txt:  Tweet Post > 140 chars]"
+        acTestReportOutput += "Unit Test 009 : [Invalid Input] [tweet.txt:  Tweet Post > 140 chars]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/009/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/009/tweet.txt')
@@ -336,7 +336,7 @@ Ward
         Unit Test 010 : More than one user before '>'
         ====================================================================================================
         '''
-        acTestReportOutput += "Unit Test 010 : [Invalid Input] [Tweet.txt: More than 1 user, invalid username]"
+        acTestReportOutput += "Unit Test 010 : [Invalid Input] [tweet.txt: More than 1 user, invalid username]"
 
         acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/010/user.txt')
         acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/010/tweet.txt')
@@ -412,6 +412,33 @@ Ward
 
         bAllTestsPassed &= bUnitTestReturn
 
+        '''
+        ====================================================================================================
+        Unit Test 013 : Non-ascii character in tweets.txt
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 013 : [Invalid Input] [tweets.txt: Non-ascii characters]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/013/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/013/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
         if (bAllTestsPassed is True):
             logging.info("All unit test passed")
         else:
@@ -426,7 +453,7 @@ Ward
         # Unit Test : Users after the word 'follows' are not comma seperated in one of the lines in user.txt TODO
         # ====================================================================================================
         # '''
-        # acTestReportOutput += "Unit Test : [Invalid Input] [User.txt: User list not comma seperated]"
+        # acTestReportOutput += "Unit Test : [Invalid Input] [user.txt: User list not comma seperated]"
 
         # acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/TODO_001/user.txt')
         # acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/TODO_001/tweet.txt')
