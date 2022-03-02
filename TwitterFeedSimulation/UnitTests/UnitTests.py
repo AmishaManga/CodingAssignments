@@ -439,6 +439,33 @@ Ward
 
         bAllTestsPassed &= bUnitTestReturn
 
+        '''
+        ====================================================================================================
+        Unit Test 014: Users after the word 'follows' are not comma seperated in one of the lines in user.txt
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 014 : [Invalid Input] [user.txt: User list not comma seperated]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/014/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/014/tweet.txt')
+
+        acCorrectResult = ""
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
         if (bAllTestsPassed is True):
             logging.info("All unit test passed")
         else:
@@ -447,30 +474,3 @@ Ward
         tplReturn = (bAllTestsPassed, acTestReportOutput)
 
         return(tplReturn)
- 
-        # '''
-        # ====================================================================================================
-        # Unit Test : Users after the word 'follows' are not comma seperated in one of the lines in user.txt TODO
-        # ====================================================================================================
-        # '''
-        # acTestReportOutput += "Unit Test : [Invalid Input] [user.txt: User list not comma seperated]"
-
-        # acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/TODO_001/user.txt')
-        # acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/TODO_001/tweet.txt')
-
-        # acCorrectResult = ""
-
-        # (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
-        # lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
-
-        # acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
-
-        # try:
-        #     self.assertEqual(acProducedResult, acCorrectResult)
-        #     bUnitTestReturn = True
-        #     acTestReportOutput += "\t\t\tPASS ---- with feedback returned: 'Success'\n"
-        # except Exception as E:
-        #     bUnitTestReturn = False
-        #     acTestReportOutput += "\t\t\tFAILED ---- with feedback returned: 'Failed'\n"
-
-        # bAllTestsPassed &= bUnitTestReturn

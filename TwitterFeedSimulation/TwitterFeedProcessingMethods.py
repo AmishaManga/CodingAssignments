@@ -39,14 +39,20 @@ class clsTwitterFeedProcessingMethods():
     def tplParseUsers(acUserContent: str):
         """ Method to parse user text.
 
+        Do some checks to confirm that the input user file is in a format we expect
+        i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.'
+
+        e.g. Jane follows John, Doe and Jack
+
             Parameters:
                 acUserContent (str): User content as in user.txt.
 
             Returns:
                 tplUsers(dctUserRelations, lstAllUsers)
                     dctUserRelations (dictionary): {user(str): user and all users current user follows (list of strings)}.
-                    example: {'Ward': ['Ward', 'Martin', 'Alan']}.
+                        example: {'Jane': ['Jane', 'John', 'Doe', 'Jack']}.
                     lstAllUsers (list): [all users alphabetically sorted (str)].
+                        example: ['Doe', 'Jack', 'Jane', 'John']
 
         """
         acRegexUserNameFormat = '^[a-zA-Z0-9_]+$'  # Use this regex format to test for a valid username
@@ -60,36 +66,39 @@ class clsTwitterFeedProcessingMethods():
 
         # Go through each line in user file
         for acLine in acUserContent.splitlines():
+            intCommaCount = int(acLine.count(','))
             lstUserLine = acLine.replace(',', '').split()
-
-            # Do some checks to confirm that the input user file is in a format we expect
-            # i.e 'Each line of a well-formed user file contains a user, followed by the word 'follows' and then a comma separated list of users they follow.'
 
             # Check that there are more than 3 parameters(i.e one user before 'follows' and atleast one user after) in each line of user.txt
             if (len(lstUserLine) < 3):
-                logging.error("There are not enough parameters (minimum 3 parameters required) in one of the lines of user.txt. User.txt is invalid.")
+                logging.error("There are not enough parameters (minimum 3 parameters required) in one of the lines of user.txt. user.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
             # Check that the word 'follows' does not appear more than once in each line of user.txt
             if (lstUserLine.count('follows') > 1):
-                logging.error("The word 'follows' appears more than once in one of the lines of user.txt. User.txt is invalid.")
+                logging.error("The word 'follows' appears more than once in one of the lines of user.txt. user.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
             # Check that the word follows appears once in each line of user.txt
             if (lstUserLine.count('follows') < 1):
-                logging.error("The word 'follows' is missing in one of the lines of user.txt. User.txt is invalid.")
+                logging.error("The word 'follows' is missing in one of the lines of user.txt. user.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
             # Check that the word follows appears where we expect, i.e one whitespace after first listed user in each line of user.txt
             if (lstUserLine[1] != str("follows")):
-                logging.error("The word 'follows' is not in the expected position in one of the lines of user.txt. User.txt is invalid.")
+                logging.error("The word 'follows' is not in the expected position in one of the lines of user.txt. user.txt is invalid.")
                 tplUsers = ({}, [])
                 return (tplUsers)
 
             lstUserLine.remove('follows')
+
+            if (len(lstUserLine) != (intCommaCount + 2)):
+                logging.error("The list of users after the word 'follows' is not comma seperated in one of the lines of user.txt. user.txt is invalid.")
+                tplUsers = ({}, [])
+                return (tplUsers)
 
             # Create dictionary of users and who they follow : i.e {user : all users current user follows including current user}
             acUser = lstUserLine[0]
@@ -108,7 +117,7 @@ class clsTwitterFeedProcessingMethods():
         # Check that user names are alpha-numeric with the exception of an underscore character
         for acUserName in lstAllUsers:
             if (re.match(acRegexUserNameFormat, acUserName) is None):
-                logging.error("Invalid user name '%s' in one of the lines of user.txt. User.txt is invalid.", acUserName)
+                logging.error("Invalid user name '%s' in one of the lines of user.txt. user.txt is invalid.", acUserName)
                 tplUsers = ({}, [])
                 return (tplUsers)
 
@@ -123,11 +132,17 @@ class clsTwitterFeedProcessingMethods():
     def lstParseTweets(acTweetContent: str):
         """ Method to parse tweet text.
 
+        Do some checks to confirm that the input tweet file is in a format we expect
+        i.e 'Lines of the tweet file contain a user, followed by greater than, space and then a tweet that may be at most 140 characters in length.'
+
+        e.g. Jane> I love sunflowers.
+
             Parameters:
                 acTweetContent (str): Tweet content as in tweet.txt.
 
             Returns:
                 lstTweets (list): List containing [user (str): tweet (str)].
+                    example: ['Jane', 'I love sunflowers.']
 
         """
         lstTweets = []
@@ -139,29 +154,28 @@ class clsTwitterFeedProcessingMethods():
 
         # Go through each line in tweet file
         for acLine in acTweetContent.splitlines():
+            # TODO is there even a > in the string
+            intCountGreaterThanOccurance = acLine.count('>')
             lstLineUserAndTweet = acLine.replace('\n', '').split('> ')
 
             # Check that there is one user parameter and one tweet parameter
             if (len(lstLineUserAndTweet) < 2):
-                logging.error("Incorrect number of parameters in one of the lines of tweet.txt. Tweet.txt is invalid.")
+                logging.error("Incorrect number of parameters in one of the lines of tweet.txt. tweet.txt is invalid.")
                 lstTweets = []
                 return(lstTweets)
 
             acTweeter = lstLineUserAndTweet[0]
             acTweet = lstLineUserAndTweet[1]
 
-            # Do some checks to confirm that the input tweet file is in a format we expect
-            # i.e 'Lines of the tweet file contain a user, followed by greater than, space and then a tweet that may be at most 140 characters in length.'
-
             # Check that user name is alpha-numeric with the exception of an underscore character
             if (re.match(acRegexUserNameFormat, acTweeter) is None):
-                logging.error("Invalid user name '%s' in one of the lines of tweet.txt. Tweet.txt is invalid.", acTweeter)
+                logging.error("Invalid user name '%s' in one of the lines of tweet.txt. tweet.txt is invalid.", acTweeter)
                 lstTweets = []
                 return(lstTweets)
 
             # Check that the length of the characters in the tweet is not more than 140 characters
             if (len(acTweet) > 140):
-                logging.error("The length of the tweet is greater than 140 characters in one of the lines of tweet.txt. Tweet.txt is invalid.")
+                logging.error("The length of the tweet is greater than 140 characters in one of the lines of tweet.txt. tweet.txt is invalid.")
                 lstTweets = []
                 return(lstTweets)
 
