@@ -1,2 +1,2 @@
-# CodingAssignments
-This repository contains coding assignments and projects
+# CodingAssignment
+This repository contains a coding assignment called Twitter Feed Simulation.
