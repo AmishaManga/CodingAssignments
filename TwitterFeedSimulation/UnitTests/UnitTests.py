@@ -520,6 +520,41 @@ Ward
 
         bAllTestsPassed &= bUnitTestReturn
 
+        '''
+        ====================================================================================================
+        Unit Test 017: Users in tweet.txt which are not in user.txt are not processed. Also handling whitespaces
+        ====================================================================================================
+        '''
+        acTestReportOutput += "Unit Test 017 : [Valid Input]   [Users in tweet.txt not in user.txt, whitespaces]"
+
+        acUserFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/017/user.txt')
+        acTweetFileContent = clsTwitterFeedProcessingMethods.acReadFile('./UnitTests/017/tweet.txt')
+
+        acCorrectResult = '''Alan
+\t@Alan:           lots of spaces   you probably missed some.
+\t@Alan: Random numbers should not be generated with a method chosen at random.
+Martin
+Ward
+\t@Alan:           lots of spaces   you probably missed some.
+\t@Ward: There are only two hard things in Computer Science: cache invalidation, naming things and off-by-1 errors.
+\t@Alan: Random numbers should not be generated with a method chosen at random.
+'''
+
+        (dctUserRelations, lstUsers) = clsTwitterFeedProcessingMethods.tplParseUsers(acUserFileContent)
+        lstTweets = clsTwitterFeedProcessingMethods.lstParseTweets(acTweetFileContent)
+
+        acProducedResult = clsTwitterFeedProcessingMethods.acCreateFeedFromUserRelationsAndTweets(lstUsers, dctUserRelations, lstTweets)
+
+        try:
+            self.assertEqual(acProducedResult, acCorrectResult)
+            bUnitTestReturn = True
+            acTestReportOutput += "\t\tPASS ---- with feedback returned: 'Success'\n"
+        except Exception as E:
+            bUnitTestReturn = False
+            acTestReportOutput += "\t\tFAILED ---- with feedback returned: 'Failed'\n"
+
+        bAllTestsPassed &= bUnitTestReturn
+
         if (bAllTestsPassed is True):
             logging.info("All unit test passed")
         else:
