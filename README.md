@@ -19,7 +19,7 @@ Ward follows Alan
 Alan follows Martin  
 Ward follows Martin, Alan  
   
-And given tweet file named tweet.txt:
+And given tweet file named tweet.txt:  
 Alan> If you have a procedure with 10 parameters, you probably missed some.  
 Ward> There are only two hard things in Computer Science: cache invalidation, naming things and off-by-1 errors.  
 Alan> Random numbers should not be generated with a method chosen at random.  
