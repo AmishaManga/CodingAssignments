@@ -20,7 +20,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 Clone the repository as follows: 
 
-https://github.com/AmishaManga/TwitterFeedSim.git
+$ git clone https://github.com/AmishaManga/TwitterFeedSim.git
 
 Navigate to TwitterFeedSim -> TwitterFeedSimulation. Once in the TwitterFeedSimulation directory, open a terminal here and type:
 
