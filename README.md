@@ -1,2 +1,3 @@
-# CodingAssignment
-This repository contains a coding assignment called Twitter Feed Simulation.
+# Twitter Feed Simulation
+
+This repository contains the solution to the twitter- like feed 
