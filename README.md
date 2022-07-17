@@ -12,3 +12,24 @@ Lines of the tweet file contain a user, followed by greater than, space and then
 
 Your program needs to write console output as follows. For each user / follower (in alphabetical order) output their name on a line. Then for each tweet, emit a line with the following format: <tab>@user: <space>message.
 
+## Example:
+  
+Given user file named user.txt:
+Ward follows Alan
+Alan follows Martin
+Ward follows Martin, Alan
+
+And given tweet file named tweet.txt:
+Alan> If you have a procedure with 10 parameters, you probably missed some.
+Ward> There are only two hard things in Computer Science: cache invalidation, naming things and off-by-1 errors.
+Alan> Random numbers should not be generated with a method chosen at random.
+
+So invoking your program with user.txt and tweet.txt as arguments should produce the following console output:
+Alan
+@Alan: If you have a procedure with 10 parameters, you probably missed some.
+@Alan: Random numbers should not be generated with a method chosen at random.
+Martin
+Ward
+@Alan: If you have a procedure with 10 parameters, you probably missed some.
+@Ward: There are only two hard things in Computer Science: cache invalidation, naming things and off-by-1 errors.
+@Alan: Random numbers should not be generated with a method chosen at random.
